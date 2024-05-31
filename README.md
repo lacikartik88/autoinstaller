@@ -1,4 +1,4 @@
-AUTOINSTALLER
+# AUTOINSTALLER
 AutoIt3Wrapper_Version=Beta
 AutoIt3Wrapper_Icon=bin\system.ico
 AutoIt3Wrapper_Outfile=autoinstaller.x86.exe
@@ -17,9 +17,9 @@ AutoIt3Wrapper_Res_Language=1038
 AutoIt3Wrapper_Res_Field=Website|"https://github.com/lacikartik88"
 AutoIt3Wrapper_Res_Field=Comment|"Categorized Portable Software Installer created by AutoIt3"
 
-Deafult directory and file structure
+# Deafult directory and file structure
 \bin
 \install
 
-Info
+# Info
 ; Info: http://www.autoitscript.com/autoit3/scite/docs/AutoIt3Wrapper.htm ; Icons added to the resources can be used with TraySetIcon(@ScriptFullPath, -5) etc. and are stored with numbers -5, -6...
