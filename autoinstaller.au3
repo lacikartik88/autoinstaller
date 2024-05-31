@@ -148,7 +148,7 @@ Func mGUI()
 	GUIDelete($mGUI)
 
 	; define gui
-	Global $mGUI = GUICreate($SNAME & "   " & $SVER, 1000, 400, -1, -1, -1, -1)
+	Global $mGUI = GUICreate($SNAME & "   " & $SVER & "Enterprise Edition", 1000, 400, -1, -1, -1, -1)
 	GUISetIcon($icon, 0)
 	GUISetFont(8, $FW_MEDIUM, "", "Comic Sans Ms", $mGUI, $CLEARTYPE_QUALITY)
 	GUICtrlCreatePic($back, 0, 0, 1000, 400, $BS_BITMAP)
