@@ -14,7 +14,7 @@ AutoIt3Wrapper_Res_ProductVersion=2.0.0.0
 AutoIt3Wrapper_Res_CompanyName=László Kártik - Senior IT System Engineer
 AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2023, László Kártik
 AutoIt3Wrapper_Res_Language=1038
-AutoIt3Wrapper_Res_Field=Website|"https://github.com/lacikartik88"
+AutoIt3Wrapper_Res_Field=Website|"https://github.com/lacikartik88/autoinstaller"
 AutoIt3Wrapper_Res_Field=Comment|"Categorized Portable Software Installer created by AutoIt3"
 
 # Deafult directory and file structure
