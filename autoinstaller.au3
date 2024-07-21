@@ -1,21 +1,22 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Version=Beta
-#AutoIt3Wrapper_Icon=bin\system.ico
+#AutoIt3Wrapper_Icon=bin\autoinstaller.ico
 #AutoIt3Wrapper_Outfile=autoinstaller.x86.exe
 #AutoIt3Wrapper_Outfile_x64=autoinstaller.x64.exe
 #AutoIt3Wrapper_Compression=0
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
-#AutoIt3Wrapper_Res_Comment=AUTOINSTALLER - Categorized Portable Software Installer created by AutoIt3
+#AutoIt3Wrapper_Res_Comment=Software installer tools, created by AutoIt3
 #AutoIt3Wrapper_Res_Description=AUTOINSTALLER   v2.0.0.0   Enterprise Edition
-#AutoIt3Wrapper_Res_Fileversion=2.0.0.0
+#AutoIt3Wrapper_Res_Fileversion=2.4.07.30
 #AutoIt3Wrapper_Res_ProductName=AUTOINSTALLER
-#AutoIt3Wrapper_Res_ProductVersion=2.0.0.0
+#AutoIt3Wrapper_Res_ProductVersion=2.4.07.30
 #AutoIt3Wrapper_Res_CompanyName=László Kártik - Senior IT System Engineer
-#AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2023, László Kártik
+#AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2024, László Kártik
+#AutoIt3Wrapper_Res_LegalTradeMarks=AUTOINSTALLER ™ SINCE 2019
 #AutoIt3Wrapper_Res_Language=1038
 #AutoIt3Wrapper_Res_Field=Website|"https://github.com/lacikartik88"
-#AutoIt3Wrapper_Res_Field=Comment|"Categorized Portable Software Installer created by AutoIt3"
+#AutoIt3Wrapper_Res_Field=Comment|"Software installer tools, created by AutoIt3"
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 ; Info: http://www.autoitscript.com/autoit3/scite/docs/AutoIt3Wrapper.htm
@@ -50,6 +51,10 @@ Func Init()
 	Global $iGUI
 	$iGUI = GUICreate("", 320, 55, -1, -1, $WS_POPUP, -1)
 	GUISetFont(8, $FW_MEDIUM, "", "Comic Sans Ms", $iGUI, $CLEARTYPE_QUALITY)
+	;WinSetTrans($iGUI, "", 250)
+	GUISetBkColor(0x2D2D2D)
+	GUICtrlSetDefColor(0xFFFFFF, $iGUI)
+	GUICtrlSetDefBkColor(0x2D2D2D, $iGUI)
 
 	; show gui, define progress
 	GUISetState(@SW_SHOW, $iGUI)
@@ -58,20 +63,17 @@ Func Init()
 	; *** step 1: define variables
 	GUICtrlCreateLabel("Define variables...                               ", 10, 33, -1, -1)
 	GUICtrlSetData($iProgress, "20")
-	Sleep(20)
+	Sleep(10)
 
-	; define main gui vars
-	Global $mGUI, $Btn[2]
+	; define main vars
+	Global $mGUI, $SNAME, $SVER, $Btn[2], $icon, $back, $bExit ; gui objects
 	Global $1LD[1024], $2LD[64], $3LD[64], $F[2048] ; read directories, files and write data to $cfg, create menu system
-	Global $ext = "*.exe" ; define extension for the files
-	Global $v[6] ; system and version conrtol
-	Global $icon, $back, $bExit, $bInstall ; theme variables
-	Global $SNAME, $SVER
+	Global $list, $a, $1 = "", $2 = 1, $ext = "*.exe" ; define extension for the files
 
 	; *** step 2: set dirs
 	GUICtrlCreateLabel("Scanning config file...                           ", 10, 33, -1, -1)
 	GUICtrlSetData($iProgress, "40")
-	Sleep(20)
+	Sleep(10)
 
 	; set directories
 	Global $instD = @ScriptDir & "\install" ; applications directory
@@ -82,26 +84,25 @@ Func Init()
 
 	; create cfg if not exist
 	If FileExists($cfg) = False Then
-		DirCreate(@ScriptDir & "\bin")
-		IniWrite(@ScriptDir & "\bin\config.ini", "Main", "SNAME", "AutoInstaller")
-		IniWrite(@ScriptDir & "\bin\config.ini", "Main", "SVER", "2.0.0.0")
+		DirCreate($binD)
+		IniWrite($cfg, "Main", "SNAME", "AutoInstaller")
+		IniWrite($cfg, "Main", "SVER", "2.4.07.30 Ultimate Edition")
 	EndIf
 
 	; *** step 3: setting up themes
 	GUICtrlCreateLabel("Setting up themes...                              ", 10, 33, -1, -1)
 	GUICtrlSetData($iProgress, "60")
-	Sleep(20)
+	Sleep(10)
 
 	; define theme variables
-	Global $icon = $binD & "\system.ico"
+	Global $icon = $binD & "\autoinstaller.ico"
 	Global $back = $binD & "\back.bmp" ; 1000x400
 	Global $bExit = $binD & "\exit.ico"
-	Global $bInstall = $binD & "\system.ico"
 
 	; *** step 4: create head
 	GUICtrlCreateLabel("Createing head...                                 ", 10, 33, -1, -1)
 	GUICtrlSetData($iProgress, "70")
-	Sleep(20)
+	Sleep(10)
 
 	; define head
 	Global $SNAME = IniRead($cfg, "Main", "SNAME", "")
@@ -110,17 +111,14 @@ Func Init()
 	; *** step 5: creating menu structure
 	GUICtrlCreateLabel("Creating menu structure...                        ", 10, 33, -1, -1)
 	GUICtrlSetData($iProgress, "90")
-	Sleep(20)
+	Sleep(10)
 
 	; delete old menu system
 	IniDelete($cfg, "Menu")
 	IniDelete($cfg, "ShellExecute")
 
 	; generate data
-	Global $1 = "", $2 = 1
-
 	$F = _FileListToArrayRec($instD, $ext, $FLTA_FILES, $FLTAR_RECUR, $FLTAR_SORT, True)
-	; _ArrayDisplay($F)
 	$list = IniWrite($cfg, "Menu", "$F[0]", "GUICtrlCreateList(" & '"' & '"' & ", 10, 10, 880, 400)")
 	For $1 In $F
 		If IsString($1) Then
@@ -135,12 +133,12 @@ Func Init()
 	GUICtrlCreateLabel("Done...                                           ", 10, 33, -1, -1)
 	GUICtrlSetData($iProgress, "100")
 	; wait 0.50s
-	Sleep(50)
+	Sleep(10)
 
 	; delete gui and run main gui
 	GUIDelete($iGUI)
 	mGUI()
-EndFunc   ;==>Init
+EndFunc		;==>Init
 
 Func mGUI()
 	; delete old guis
@@ -148,9 +146,10 @@ Func mGUI()
 	GUIDelete($mGUI)
 
 	; define gui
-	Global $mGUI = GUICreate($SNAME & "   " & $SVER & "Enterprise Edition", 1000, 400, -1, -1, -1, -1)
+	Global $mGUI = GUICreate($SNAME & "   " & $SVER, 1000, 400, -1, -1, -1, -1)
 	GUISetIcon($icon, 0)
 	GUISetFont(8, $FW_MEDIUM, "", "Comic Sans Ms", $mGUI, $CLEARTYPE_QUALITY)
+	;WinSetTrans($mGUI, "", 250)
 	GUICtrlCreatePic($back, 0, 0, 1000, 400, $BS_BITMAP)
 	GUICtrlSetDefColor(0xFFFFFF, $mGUI)
 	GUICtrlSetDefBkColor(0x2D2D2D, $mGUI)
@@ -170,26 +169,26 @@ Func mGUI()
 		EndIf
 	Next
 
+	; install button [1]
+	$Btn[1] = GUICtrlCreateButton("  Install", 895, 10, 100, 50, $BS_ICON)
+	GUICtrlSetImage($Btn[1], $icon, "", 2)
+	GUICtrlSetCursor($Btn[1], 0)
+	GUICtrlSetStyle($Btn[1], $BS_LEFT)
+
 	; exit button [0]
 	$Btn[0] = GUICtrlCreateButton("  Exit", 895, 343, 100, 50, $BS_ICON)
 	GUICtrlSetImage($Btn[0], $bExit, "", 2)
 	GUICtrlSetCursor($Btn[0], 0)
 	GUICtrlSetStyle($Btn[0], $BS_LEFT)
 
-	; install button [1]
-	$Btn[1] = GUICtrlCreateButton("  Install", 895, 10, 100, 50, $BS_ICON)
-	GUICtrlSetImage($Btn[1], $bInstall, "", 2)
-	GUICtrlSetCursor($Btn[1], 0)
-	GUICtrlSetStyle($Btn[1], $BS_LEFT)
-
 	; show gui
 	GUISetState(@SW_SHOW, $mGUI)
-EndFunc   ;==>mGUI
+EndFunc		;==>mGUI
 
 Func Installing()
-		Global $a = GUICtrlRead($F[0])
+		$a = GUICtrlRead($F[0])
 		Shellexecute($instD & "\" & $a)
-EndFunc   ;==>Installing
+EndFunc		;==>Installing
 
 ; *** SYSTEM CORE ***
 While - 1
@@ -197,7 +196,7 @@ While - 1
 		Case $GUI_EVENT_CLOSE , $Btn[0] ; exit
 			GUIDelete($mGUI)
 			ExitLoop
-		Case $Btn[1] ; Install
+		Case $Btn[1] ; install
 			Installing()
 	EndSwitch
 WEnd
