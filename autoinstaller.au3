@@ -7,7 +7,7 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Comment=Software installer tools, created by AutoIt3
-#AutoIt3Wrapper_Res_Description=AUTOINSTALLER   v2.0.0.0   Enterprise Edition
+#AutoIt3Wrapper_Res_Description=AUTOINSTALLER   2.4.07.30   Ultimate Edition
 #AutoIt3Wrapper_Res_Fileversion=2.4.07.30
 #AutoIt3Wrapper_Res_ProductName=AUTOINSTALLER
 #AutoIt3Wrapper_Res_ProductVersion=2.4.07.30
