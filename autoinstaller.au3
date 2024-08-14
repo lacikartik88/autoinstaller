@@ -8,13 +8,14 @@
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Comment=Software installer tools, created by AutoIt3
 #AutoIt3Wrapper_Res_Description=AUTOINSTALLER   v2.4.07.30   Enterprise Edition
-#AutoIt3Wrapper_Res_Fileversion=2.4.07.30
+#AutoIt3Wrapper_Res_Fileversion=2.4.8.11
 #AutoIt3Wrapper_Res_ProductName=AUTOINSTALLER
-#AutoIt3Wrapper_Res_ProductVersion=2.4.07.30
+#AutoIt3Wrapper_Res_ProductVersion=2.4.08.11
 #AutoIt3Wrapper_Res_CompanyName=László Kártik - Senior IT System Engineer
 #AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2024, László Kártik
 #AutoIt3Wrapper_Res_LegalTradeMarks=AUTOINSTALLER ™ SINCE 2019
 #AutoIt3Wrapper_Res_Language=1038
+#AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Res_Field=Website|"https://github.com/lacikartik88"
 #AutoIt3Wrapper_Res_Field=Comment|"Software installer tools, created by AutoIt3"
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
@@ -68,7 +69,7 @@ Func Init()
 	; define main vars
 	Global $mGUI, $SNAME, $SVER, $Btn[2], $icon, $back, $bExit ; gui objects
 	Global $1LD[1024], $2LD[64], $3LD[64], $F[2048] ; read directories, files and write data to $cfg, create menu system
-	Global $list, $a, $1 = "", $2 = 1, $ext = "*.exe" ; define extension for the files
+	Global $list, $a, $1 = "", $2 = 1, $ext = "*.exe; *.iso; *.cmd; *.ps1" ; define extension for the files
 
 	; *** step 2: set dirs
 	GUICtrlCreateLabel("Scanning config file...                           ", 10, 33, -1, -1)
@@ -86,7 +87,10 @@ Func Init()
 	If FileExists($cfg) = False Then
 		DirCreate($binD)
 		IniWrite($cfg, "Main", "SNAME", "AutoInstaller")
-		IniWrite($cfg, "Main", "SVER", "2.4.07.30 Ultimate Edition")
+		IniWrite($cfg, "Main", "SVER", "2.4.08.11 Ultimate Edition   (developer: Kártik László - Senior IT System Engineer)")
+	Else
+		IniWrite($cfg, "Main", "SNAME", "AutoInstaller")
+		IniWrite($cfg, "Main", "SVER", "2.4.08.11 Ultimate Edition   (developer: Kártik László - Senior IT System Engineer)")
 	EndIf
 
 	; *** step 3: setting up themes
